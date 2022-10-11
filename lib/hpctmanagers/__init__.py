@@ -18,9 +18,15 @@ logger = logging.getLogger(__name__)
 class Manager:
     """Base Manager class.
 
-    Manages one or more underlying services/servers/resources.
-    High-level operations that either succeed or fail. Control over
-    low-level, individual items is not intended.
+    Overarching design goals:
+    1. Manage one or more underlying services/servers/resources.
+    2. High-level operations either succeed or fail.
+    3. Control over low-level, individual items is not intended.
+
+    This is not a library or debugging tool. The use case is defined
+    and limited. Functionality is exposed and is intended to work or
+    not. Anything that does not work is left up to the user/admin to
+    address so that the Manager can work.
 
     The methods are a mix of functionality that one would find during
     the lifetime of a service/server/resource: install to start. The

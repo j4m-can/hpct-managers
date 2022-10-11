@@ -8,8 +8,11 @@
 functionality.
 """
 
-
+import grp
 import logging
+import os
+import pathlib
+import pwd
 
 
 logger = logging.getLogger(__name__)
@@ -58,14 +61,42 @@ class Manager:
     def is_running(self):
         return False
 
+    def restart(self):
+        self.stop()
+        self.start()
+
+    def save_file(self, data, path, mode=None, user=None, group=None):
+        """Save file."""
+
+        try:
+            user = user if user != None else -1
+            group = group if group != None else -1
+            uid = user if type(user) == int else pwd.getpwnam(user).pw_uid
+            gid = group if type(group) == int else grp.getgrnam(group).gr_gid
+        except:
+            raise Exception("could not find owner/group")
+
+        try:
+            # create/update securely
+            p = pathlib.Path(path)
+            p.touch()
+
+            if (uid, gid) != (-1, -1):
+                os.chown(path, uid, gid)
+
+            if mode != None:
+                p.chmod(mode)
+
+            p.write_bytes(self.data)
+        except:
+            raise Exception("failed to save file")
+
+    def save_file_by_key(self, data, key, mode=None, user=None, group=None):
+        """Look up file settings by key and call `save_file()`."""
+        pass
+
     def start(self):
         pass
 
     def stop(self):
-        pass
-
-    def restart(self):
-        pass
-
-    def uninstall(self):
         pass

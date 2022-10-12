@@ -4,7 +4,6 @@
 # hpctmanagers/ubuntu.py
 
 import apt
-import subprocess
 
 from . import ManagerException
 from .systemd import SystemdManager
@@ -32,6 +31,6 @@ class UbuntuManager(SystemdManager):
 
     def is_installed(self):
         for name in self.install_packages:
-            if subprocess.call(["dpkg", "-l", name]) != 0:
+            if self._call_quiet(["dpkg", "-l", name]) != 0:
                 return False
         return True

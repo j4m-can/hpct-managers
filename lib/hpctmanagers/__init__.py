@@ -12,6 +12,7 @@ import grp
 import os
 import pathlib
 import pwd
+import subprocess
 
 
 class ManagerException(Exception):
@@ -39,6 +40,40 @@ class Manager:
 
     def __init__(self, *args, **kwargs):
         pass
+
+    def _call(self, *args, **kwargs):
+        """Unmodified subprocess.call() helper."""
+
+        return subprocess.call(*args, **kwargs)
+
+    def _call_quiet(self, cmd, *args, **kwargs):
+        """Helper for quiet subprocess.call()."""
+
+        return subprocess.call(
+            cmd, *args, **kwargs, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT
+        )
+
+    def _call_capture(self, cmd, *args, **kwargs):
+        """Helper for capture subprocess.call()."""
+
+        return subprocess.call(cmd, *args, **kwargs, capture_output=True)
+
+    def _run(self, *args, **kwargs):
+        """Unmodified subprocess.run() helper."""
+
+        return subprocess.run(*args, **kwargs)
+
+    def _run_quiet(self, cmd, *args, **kwargs):
+        """Helper for quiet subprocess.run()."""
+
+        return subprocess.run(
+            cmd, *args, **kwargs, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT
+        )
+
+    def _run_capture(self, cmd, *args, **kwargs):
+        """Helper for catpure subprocess.run()."""
+
+        return subprocess.run(cmd, *args, **kwargs, capture_output=True)
 
     def configure(self):
         pass

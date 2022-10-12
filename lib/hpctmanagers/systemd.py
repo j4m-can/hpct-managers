@@ -3,8 +3,6 @@
 #
 # hpctmanagers/systemd.py
 
-import subprocess
-
 from . import Manager, ManagerException
 
 
@@ -21,14 +19,7 @@ class SystemdManager(Manager):
         try:
             rc = 0
             for name in self.systemd_services:
-                if (
-                    subprocess.call(
-                        ["systemctl", "disable", name],
-                        stdout=subprocess.DEVNULL,
-                        stderr=subprocess.STDOUT,
-                    )
-                    != 0
-                ):
+                if self._call_quiet(["systemctl", "disable", name]) != 0:
                     rc = 1
         finally:
             if rc != 0:
@@ -40,14 +31,7 @@ class SystemdManager(Manager):
         try:
             rc = 0
             for name in self.systemd_services:
-                if (
-                    subprocess.call(
-                        ["systemctl", "enable", name],
-                        stdout=subprocess.DEVNULL,
-                        stderr=subprocess.STDOUT,
-                    )
-                    != 0
-                ):
+                if self._call_quiet(["systemctl", "enable", name]) != 0:
                     rc = 1
         finally:
             if rc != 0:
@@ -57,14 +41,7 @@ class SystemdManager(Manager):
         """Check enabled status of services."""
 
         for name in self.systemd_services:
-            if (
-                subprocess.call(
-                    ["systemctl", "is-enabled", name],
-                    stdout=subprocess.DEVNULL,
-                    stderr=subprocess.STDOUT,
-                )
-                != 0
-            ):
+            if self._call_quiet(["systemctl", "is-enabled", name]) != 0:
                 return False
         return True
 
@@ -72,14 +49,7 @@ class SystemdManager(Manager):
         """Check running/active status of services."""
 
         for name in self.systemd_services:
-            if (
-                subprocess.call(
-                    ["systemctl", "is-active", name],
-                    stdout=subprocess.DEVNULL,
-                    stderr=subprocess.STDOUT,
-                )
-                != 0
-            ):
+            if self._call_quiet(["systemctl", "is-active", name]) != 0:
                 return False
         return True
 
@@ -89,14 +59,7 @@ class SystemdManager(Manager):
         try:
             rc = 0
             for name in self.systemd_services:
-                if (
-                    subprocess.call(
-                        ["systemctl", "start", name],
-                        stdout=subprocess.DEVNULL,
-                        stderr=subprocess.STDOUT,
-                    )
-                    != 0
-                ):
+                if self._call_quiet(["systemctl", "start", name]) != 0:
                     rc = 1
         finally:
             if rc != 0:
@@ -108,14 +71,7 @@ class SystemdManager(Manager):
         try:
             rc = 0
             for name in self.systemd_services:
-                if (
-                    subprocess.call(
-                        ["systemctl", "stop", name],
-                        stdout=subprocess.DEVNULL,
-                        stderr=subprocess.STDOUT,
-                    )
-                    != 0
-                ):
+                if self._call_quiet(["systemctl", "stop", name]) != 0:
                     rc = 1
         finally:
             if rc != 0:

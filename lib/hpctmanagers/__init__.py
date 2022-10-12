@@ -18,6 +18,10 @@ import pwd
 logger = logging.getLogger(__name__)
 
 
+class ManagerException(Exception):
+    pass
+
+
 class Manager:
     """Base Manager class.
 

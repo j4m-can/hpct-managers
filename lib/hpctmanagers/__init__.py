@@ -9,13 +9,9 @@ functionality.
 """
 
 import grp
-import logging
 import os
 import pathlib
 import pwd
-
-
-logger = logging.getLogger(__name__)
 
 
 class ManagerException(Exception):

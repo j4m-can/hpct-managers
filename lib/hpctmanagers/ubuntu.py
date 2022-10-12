@@ -27,7 +27,7 @@ class UbuntuManager(SystemdManager):
 
             cache.commit()
         except:
-            ManagerException("failed to install packages")
+            ManagerException(f"({self.__class__.__name__}) failed to install packages")
 
     def is_installed(self):
         for name in self.install_packages:

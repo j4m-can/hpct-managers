@@ -23,7 +23,7 @@ class SystemdManager(Manager):
                     rc = 1
         finally:
             if rc != 0:
-                raise ManagerException("failed to disable services")
+                raise ManagerException(f"({self.__class__.__name__}) failed to disable services")
 
     def enable(self):
         """Enable services."""
@@ -35,7 +35,7 @@ class SystemdManager(Manager):
                     rc = 1
         finally:
             if rc != 0:
-                raise ManagerException("failed to enable services")
+                raise ManagerException(f"({self.__class__.__name__}) failed to enable services")
 
     def is_enabled(self):
         """Check enabled status of services."""
@@ -63,7 +63,7 @@ class SystemdManager(Manager):
                     rc = 1
         finally:
             if rc != 0:
-                raise ManagerException("failed to start services")
+                raise ManagerException(f"({self.__class__.__name__}) failed to start services")
 
     def stop(self):
         """Stop services."""
@@ -75,4 +75,4 @@ class SystemdManager(Manager):
                     rc = 1
         finally:
             if rc != 0:
-                raise ManagerException("failed to stop services")
+                raise ManagerException(f"({self.__class__.__name__}) failed to stop services")

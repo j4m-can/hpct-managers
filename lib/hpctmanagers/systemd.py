@@ -13,6 +13,12 @@ class SystemdManager(Manager):
 
     systemd_services = []
 
+    def __init__(self, *args, **kwargs):
+        if "systemd_services" in kwargs:
+            self.systemd_services = kwargs.pop("systemd_services")
+
+        super().__init__(*args, **kwargs)
+
     def disable(self):
         """Disable services."""
 

@@ -45,6 +45,7 @@ class Manager:
 
     def __init__(self, *args, **kwargs):
         self._logger = __null_logger
+        self._verbose = False
 
     def _call(self, *args, **kwargs):
         """Unmodified subprocess.call() helper."""
@@ -151,6 +152,9 @@ class Manager:
 
     def set_logger(self, value):
         self._logger = value
+
+    def set_verbose(self, value):
+        self._verbose = value
 
     def start(self):
         pass

@@ -69,7 +69,10 @@ class UbuntuManager(SystemdManager):
                     args.append(f"--channel={channel}")
                 args.extend(snapd.get("args", []))
 
-                cp = self._run_capture(args)
+                if self._verbose:
+                    cp = self._run(args, decorate=True)
+                else:
+                    cp = self._run_quiet(args)
                 if cp.returncode != 0:
                     failed.append(snapd["name"])
         except:

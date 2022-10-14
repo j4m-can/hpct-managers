@@ -16,8 +16,8 @@ import pwd
 import subprocess
 
 
-__null_logger = logging.getLogger(__name__)
-__null_logger.addHandler(logging.NullHandler())
+_null_logger = logging.getLogger(__name__)
+_null_logger.addHandler(logging.NullHandler())
 
 
 class ManagerException(Exception):
@@ -44,7 +44,7 @@ class Manager:
     """
 
     def __init__(self, *args, **kwargs):
-        self._logger = __null_logger
+        self._logger = _null_logger
         self._verbose = False
 
     def _call(self, *args, **kwargs):

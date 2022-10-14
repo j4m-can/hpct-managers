@@ -9,10 +9,15 @@ functionality.
 """
 
 import grp
+import logging
 import os
 import pathlib
 import pwd
 import subprocess
+
+
+__null_logger = logging.getLogger(__name__)
+__null_logger.addHandler(logging.NullHandler())
 
 
 class ManagerException(Exception):
@@ -39,7 +44,7 @@ class Manager:
     """
 
     def __init__(self, *args, **kwargs):
-        pass
+        self._logger = __null_logger
 
     def _call(self, *args, **kwargs):
         """Unmodified subprocess.call() helper."""
@@ -143,6 +148,9 @@ class Manager:
     def save_file_by_key(self, data, key, mode=None, user=None, group=None):
         """Look up file settings by key and call `save_file()`."""
         pass
+
+    def set_logger(self, value):
+        self._logger = value
 
     def start(self):
         pass

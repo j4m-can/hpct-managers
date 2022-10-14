@@ -36,6 +36,28 @@ class UbuntuManager(SystemdManager):
         try:
             failed = []
 
+            for name in self.install_packages:
+                if not self._is_installed_deb(name):
+                    try:
+                        rc = self._call(
+                            ["apt", "install", "-y", name], text=True, decorate=self._verbose
+                        )
+                        if rc != 0:
+                            raise Exception()
+                    except:
+                        failed.append(name)
+        except:
+            failed = "-"
+        finally:
+            if failed:
+                raise ManagerException(
+                    f"({self.__class__.__name__}) failed to install packages ({failed})"
+                )
+
+    def _xinstall_debs(self):
+        try:
+            failed = []
+
             cache = apt.cache.Cache()
             cache.update()
             cache.open()
@@ -84,7 +106,15 @@ class UbuntuManager(SystemdManager):
                 )
 
     def _is_installed_deb(self, name):
-        return True if self._call_quiet(["dpkg", "-l", name]) == 0 else False
+        # return True if self._call_quiet(["dpkg", "-l", name]) == 0 else False
+        cp = self._run_capture(["dpkg", "-l", name], text=True)
+        if cp.returncode == 0:
+            try:
+                line = cp.stdout.split("\n")[-2]
+                return line.startswith("ii")
+            except:
+                pass
+        return False
 
     def _is_installed_snap(self, snapd):
         # TODO: check for version

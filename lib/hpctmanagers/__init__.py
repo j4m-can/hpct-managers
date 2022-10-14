@@ -66,11 +66,6 @@ class Manager:
             cmd, *args, **kwargs, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT
         )
 
-    def _call_capture(self, cmd, *args, **kwargs):
-        """Helper for capture subprocess.call()."""
-
-        return subprocess.call(cmd, *args, **kwargs, capture_output=True)
-
     def _run(self, *args, **kwargs):
         """Unmodified subprocess.run() helper."""
 

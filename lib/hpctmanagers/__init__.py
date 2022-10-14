@@ -44,7 +44,14 @@ class Manager:
     def _call(self, *args, **kwargs):
         """Unmodified subprocess.call() helper."""
 
-        return subprocess.call(*args, **kwargs)
+        try:
+            if decorate := kwargs.pop("decorate", False):
+                print("-------------------- ↓ ↓ ↓ ↓ ↓ --------------------")
+            rc = subprocess.call(*args, **kwargs)
+        finally:
+            if decorate:
+                print("-------------------- ↑ ↑ ↑ ↑ ↑ --------------------")
+        return rc
 
     def _call_quiet(self, cmd, *args, **kwargs):
         """Helper for quiet subprocess.call()."""
@@ -61,7 +68,14 @@ class Manager:
     def _run(self, *args, **kwargs):
         """Unmodified subprocess.run() helper."""
 
-        return subprocess.run(*args, **kwargs)
+        try:
+            if decorate := kwargs.pop("decorate", False):
+                print("-------------------- ↓ ↓ ↓ ↓ ↓ --------------------")
+            cp = subprocess.run(*args, **kwargs)
+        finally:
+            if decorate:
+                print("-------------------- ↑ ↑ ↑ ↑ ↑ --------------------")
+        return cp
 
     def _run_quiet(self, cmd, *args, **kwargs):
         """Helper for quiet subprocess.run()."""

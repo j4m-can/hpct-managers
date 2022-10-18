@@ -15,7 +15,6 @@ import pathlib
 import pwd
 import subprocess
 
-
 _null_logger = logging.getLogger(__name__)
 _null_logger.addHandler(logging.NullHandler())
 
@@ -137,7 +136,7 @@ class Manager:
             if mode != None:
                 p.chmod(mode)
 
-            p.write_bytes(self.data)
+            p.write_bytes(data)
         except:
             raise Exception("failed to save file")
 

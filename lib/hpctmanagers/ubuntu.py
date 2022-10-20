@@ -3,8 +3,6 @@
 #
 # hpctmanagers/ubuntu.py
 
-import apt
-
 from . import ManagerException
 from .systemd import SystemdManager
 
@@ -44,29 +42,6 @@ class UbuntuManager(SystemdManager):
                         )
                         if rc != 0:
                             raise Exception()
-                    except:
-                        failed.append(name)
-        except:
-            failed = "-"
-        finally:
-            if failed:
-                raise ManagerException(
-                    f"({self.__class__.__name__}) failed to install packages ({failed})"
-                )
-
-    def _xinstall_debs(self):
-        try:
-            failed = []
-
-            cache = apt.cache.Cache()
-            cache.update()
-            cache.open()
-
-            for name in self.install_packages:
-                if not self._is_installed_deb(name):
-                    try:
-                        cache[name].mark_install()
-                        cache.commit()
                     except:
                         failed.append(name)
         except:

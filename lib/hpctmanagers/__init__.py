@@ -61,7 +61,8 @@ class Manager:
         """Unmodified subprocess.call() helper."""
 
         try:
-            if decorate := kwargs.pop("decorate", False):
+            decorate = kwargs.pop("decorate", False)
+            if decorate:
                 print("-------------------- ↓ ↓ ↓ ↓ ↓ --------------------")
             rc = subprocess.call(*args, **kwargs)
         finally:
@@ -80,7 +81,8 @@ class Manager:
         """Unmodified subprocess.run() helper."""
 
         try:
-            if decorate := kwargs.pop("decorate", False):
+            decorate = kwargs.pop("decorate", False)
+            if decorate:
                 print("-------------------- ↓ ↓ ↓ ↓ ↓ --------------------")
             cp = subprocess.run(*args, **kwargs)
         finally:

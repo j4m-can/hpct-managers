@@ -62,7 +62,8 @@ class RedHatManager(SystemdManager):
 
                 # needs install/refresh
                 args = ["snap", "install", snapd["name"]]
-                if channel := snapd.get("channel"):
+                channel = snapd.get("channel")
+                if channel:
                     args.append(f"--channel={channel}")
                 args.extend(snapd.get("args", []))
 

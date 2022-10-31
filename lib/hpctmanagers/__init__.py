@@ -11,9 +11,12 @@ functionality.
 import grp
 import logging
 import os
+import os.path
 import pathlib
 import pwd
 import subprocess
+
+__series = None
 
 _null_logger = logging.getLogger(__name__)
 _null_logger.addHandler(logging.NullHandler())
@@ -155,3 +158,62 @@ class Manager:
 
     def stop(self):
         pass
+
+
+class Series:
+    def __init__(self, name, version):
+        self.name = name
+        self.version = version
+        self.full = f"{name}-{version}"
+
+
+def get_series():
+    if __series != None:
+        return __series
+
+    name = version = None
+
+    def load_kv_file(path):
+        d = {}
+        for line in open(path).read().split("\n"):
+            if line:
+                k, v = line.split("=", 1)
+                if v.startswith('"'):
+                    v = v[1:-1]
+                d[k.lower()] = v.lower()
+        return d
+
+    try:
+        if os.path.exists("/etc/redhat-relase"):
+            # redhat, centos, oracle
+            d = load_kv_file("/etc/redhat-release")
+
+            name = d["id"]
+            version = d["version"]
+
+        elif os.path.exists("/etc/debian_release"):
+            # debian, ubuntu
+            d = load_kv_file("/etc/os-release")
+
+            name = d["id"]
+            if name == "ubuntu":
+                version = d["version_id"]
+            else:
+                # debian
+                version = d["version_codename"]
+
+        elif os.path.exists("/etc/os-release"):
+            # opensuse
+            d = load_kv_file("/etc/os-release")
+            if d["id"].startswith("opensuse-"):
+                name, version = d["id"].split("-")
+            else:
+                name = d["name"]
+                version = d["version_id"]
+    except:
+        pass
+
+    if name and version:
+        return Series(name, version)
+    else:
+        return None

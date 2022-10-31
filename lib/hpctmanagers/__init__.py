@@ -46,8 +46,16 @@ class Manager:
     """
 
     def __init__(self, *args, **kwargs):
-        self._logger = _null_logger
-        self._verbose = False
+        """Initialize.
+
+        Args:
+            logger: Logger object. Default is the null logger.
+            verbose: Determines verbosity when running operations.
+                Default is False.
+        """
+
+        self._logger = kwargs.get("logger", _null_logger)
+        self._verbose = kwargs.get("verbose", False)
 
     def _call(self, *args, **kwargs):
         """Unmodified subprocess.call() helper."""
